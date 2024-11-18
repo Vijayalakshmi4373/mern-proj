@@ -1,0 +1,58 @@
+const mongoose = require("mongoose");
+
+const docModel = mongoose.Schema(
+  {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'users', // Reference to users collection
+    },
+    fullName: {
+      type: String,
+      required: [true, "Full Name is required"],
+      set: function (value) {
+        return value.charAt(0).toUpperCase() + value.slice(1); // Capitalizing first letter
+      },
+    },
+    email: {
+      type: String,
+      required: [true, "Email is required"],
+      match: [/.+\@.+\..+/, "Please enter a valid email address"], // Email format validation
+    },
+    phone: {
+      type: String,
+      required: [true, "Phone is required"],
+      match: [/^\d{10}$/, "Please enter a valid 10-digit phone number"], // Simple phone validation (can be adjusted)
+    },
+    address: {
+      type: String,
+      required: [true, "Address is required"],
+    },
+    specialization: {
+      type: String,
+      required: [true, "Specialization is required"],
+    },
+    experience: {
+      type: String,
+      required: [true, "Experience is required"],
+    },
+    fees: {
+      type: Number,
+      required: [true, "Fees are required"],
+    },
+    status: {
+      type: String,
+      default: 'pending', // Default status is 'pending'
+    },
+    timings: {
+      type: Object,
+      required: [true, "Work timings are required"], // Work timings are mandatory
+    },
+  },
+  {
+    timestamps: true, // Automatically add createdAt and updatedAt fields
+  }
+);
+
+const docSchema = mongoose.model("doctor", docModel);
+
+module.exports = docSchema;
